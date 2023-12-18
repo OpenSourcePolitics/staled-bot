@@ -1,0 +1,43 @@
+name: 'Stale Bot'
+description: 'Annotate stale issues and pull requests'
+inputs:
+  issue-staled-period:
+    description: 'Days before issue is marked as stale'
+    required: false
+    default: '45'
+  issue-closed-period:
+    description: 'Days before staled issue is closed'
+    required: false
+    default: '10'
+  pr-staled-period:
+    description: 'Days before PR is marked as stale'
+    required: false
+    default: '30'
+  pr-closed-period:
+    description: 'Days before staled PR is closed'
+    required: false
+    default: '7'
+  stale-pr-label:
+    description: 'Staled PR label'
+    required: false
+    default: 'staled'
+  stale-issue-label:
+    description: 'Staled Issue label'
+    required: false
+    default: 'staled'
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/stale@v9
+      with:
+        stale-issue-message: 'This issue is stale because it has been open 45 days with no activity. Remove stale label or comment or this will be closed in 5 days.'
+        stale-pr-message: 'This PR is stale because it has been open 30 days with no activity. Remove stale label or comment or this will be closed in 7 days.'
+        close-issue-message: 'This issue was closed because it has been stalled for 5 days with no activity.'
+        close-pr-message: 'This PR was closed because it has been stalled for 7 days with no activity.'
+        stale-issue-label: ${{ inputs.stale-issue-label }}
+        stale-pr-label: ${{ inputs.stale-pr-label }}
+        days-before-issue-stale: ${{ inputs.issue-staled-period }}
+        days-before-pr-stale: ${{ inputs.pr-staled-period }}
+        days-before-issue-close: ${{ inputs.issue-staled-period }}
+        days-before-pr-close: ${{ inputs.pr-staled-period }}
